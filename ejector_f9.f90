@@ -248,7 +248,7 @@ close(1)
 		
 10	niter = 1 + niter
 WRITE(*,*)"niter=",niter
-	  islookp = 1
+	  islp = 1
 	  skip = 0.0
 	  typ = 1.0		!****type用typ代替
 	  stag = 0.0   ! in original program stag=0
