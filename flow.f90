@@ -31,7 +31,7 @@
         i=islp
         iter=0
         atol=1.05
-        error=0.0001
+        error=0.00001
         asass(i)=1.0
         If(islp==1) amin=10.0
         If(stag>=0.0) Goto 10

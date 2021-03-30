@@ -28,8 +28,8 @@ Subroutine outslp
 	  !
 	write(*,*)"call outslp"
 	
-	write(*,*)"xslp(islp)=",xslp(islp)
-	write(*,*)"edn=",edn
+	! write(*,*)"xslp(islp)=",xslp(islp)
+	! write(*,*)"edn=",edn
 	If (xslp(islp)<=edn) Goto 8
 	ratio = php(islp)/phs(islp)
 	dx = xslp(islp) - xslp(islp-1)
@@ -44,8 +44,10 @@ Subroutine outslp
 	phs(islp) = php(islp)/ratio
 	ams(islp) = funm(gams, phs(islp))
 	asass(islp) = funa(gams, ams(islp))
+
 	Call shlyr(ddsdx)        
 8	Write (7, 600)(title(k), k=1, 18)
+	write(*,*)"area=",area(niter)
 	Write (7, 602) wtfl, wleak(niter), pts(niter), area(niter)
 	Write (7, 604)
 	Do i = 1, islp

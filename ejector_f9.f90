@@ -247,8 +247,8 @@ close(1)
 	  If (iplot>0) prt = -1.0
 		
 10	niter = 1 + niter
-WRITE(*,*)niter
-	  islp = 1
+WRITE(*,*)"niter=",niter
+	  islookp = 1
 	  skip = 0.0
 	  typ = 1.0		!****type用typ代替
 	  stag = 0.0   ! in original program stag=0
@@ -274,8 +274,8 @@ WRITE(*,*)niter
 		
 
 	  pamb = php(islp)
-	  write(*,*)"pamb=",pamb
-	  write(*,*)"stag=",stag
+	!   write(*,*)"pamb=",pamb
+	!   write(*,*)"stag=",stag
 	  If (try==1.0) Call sonics
 	  vel = funq(gamp, amr)
 		Do j = 1, 100
@@ -299,13 +299,9 @@ WRITE(*,*)niter
 
 		Do 22 i = 2, ndata
 			x(2, 1) = xsonic(i)
-			write(*,*)"bp1"
 			y(2, 1) = ysonic(i)
-			write(*,*)"bp2"
 			p(2, 1) = psonic(i)
-			write(*,*)"bp3"
 			t(2, 1) = tsonic(i)
-			write(*,*)"bp4"
 			If (try==1.0) Call sonpt(i)
 			Do j = 2, 100
 				write(*,*)"bp5"

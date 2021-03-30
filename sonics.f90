@@ -30,43 +30,41 @@
       !
       !     Subroutine sonics
       !
-        nmax=100
+        nmax=26
         inner=0
         nsonic=21
         wtflw=0.80
         nangle=ndata
         angle=conva*abs(angr)
-        error=1
+        error=3
         match=0.99-0.001*(angle-10.0)
         vmatch=funv(gamp,match)
         vamb=funq(gamp,pamb)
         mamb=funm(gamp,vamb)
         vmax=vamb/vmatch
-10		inner=1+inner
+10      write(*,*)"10"
+		inner=1+inner
         iter=0
         velapr=0.20
         rhovel=wtflw/(yratio*yratio**fdim)
-        !write(*,*)"rhovel changed=",rhovel
-12	 iter=1+iter
+        ! write(*,*)"wtflw=",wtflw
+        ! write(*,*)"yratio=",yratio
+        ! write(*,*)"fdim=",fdim
+12	write(*,*)"12"	
+iter=1+iter
         vaprch=velapr
         velstr=vaprch*vmatch
-        write(*,*)"velstr=",velstr
-        write(*,*)"gamp=",gamp
         maprch=funm(gamp,velstr)
-        write(*,*)"maprch=",maprch
         velapr=rhovel*funr(gamp,match)/funr(gamp,maprch)
-        write(*,*)"rhovel=",rhovel
-        write(*,*)"maprch=",maprch
-        write(*,*)"match=",match
-        write(*,*)"velapr=",velapr
+        ! write(*,*)"rhovel changed=",rhovel
         test=abs(velapr-vaprch)
-        write(*,*)"test=",test
-        write(*,*)"error*velapr=",error*velapr
-        If(iter<100) Goto 14
+        If(iter<50) Goto 14
         Write(7,600)
         Call exit
-        
-14		If(test>error*velapr) Goto 12
+14      write(*,*)"14"
+! write(*,*)"error*velapr=",error*velapr
+!         write(*,*)"test=",test
+	If(test>error*velapr) Goto 12
         vmin=0.750
         If(nangle>nmax) nangle=nmax
         If(nangle<=nstop) nangle=1+nstop
@@ -75,7 +73,7 @@
         wj=omega(vmax,match)
         delw=wj-omega(velapr,match)
         ! write(*,*)"delw=",delw
-        
+        ! write(*,*)"velapr=",velapr
         ! write(*,*)"match=",match
         delv=(vmax-vmin)/xnow
         xis(1,1)=0.0
@@ -84,29 +82,19 @@
         tau(1)=angr
         alpha=abs(angr)
         dt=alpha/xnoa
-        !vratio=vmax
-        ! write(*,*)"vmax=",vmax
+		!vratio=vmax
         Do i=2,nsonic
           vratio=vratio-delv  !vratio�����״γ���,ǰ��δ������
-          ! write(*,*)"vratio=",vratio
           If(vratio<1.0) vratio=1.0
           w(i)=omega(vratio,match)
           dw=w(i)-w(i-1)
           Call dzdxdy(w(i),wj,alpha,tau(1),delw,dw,0.0,dxs,dys)
-          ! write(*,*)"i=",i
-          ! write(*,*)"w(i)",w(i)
-          ! write(*,*)"wj=",wj
-          ! write(*,*)"alpha=",alpha
-          ! write(*,*)"tau(1)=",tau(1)
-          ! write(*,*)"delw=",delw
-          ! write(*,*)"dw=",dw
           xis(i,1)=xis(i-1,1)+dxs
           yis(i,1)=yis(i-1,1)+dys
-          ! write(*,*)"dxs=",dxs
-          ! write(*,*)"dys=",dys
           If(vratio==1.0) Goto 18
-	End Do
-18		wtflw=0.0
+		End Do
+18		write(*,*)"18"
+        wtflw=0.0
         nchnge=nangle-nstop
         Do 20, j=2,nangle
           If(j<=nchnge) dt=dt
@@ -117,44 +105,61 @@
           Call dzdxdy(w(i),wj,alpha,tau(j),delw,0.0,dt,dxs,dys)
           xis(i,j)=xis(i,j-1)+dxs
           yis(i,j)=yis(i,j-1)+dys
-        !   write(*,*)"dxs=",dxs
-        !   write(*,*)"dys=",dys
           wtflw=wtflw+(dys*cos(avetau)-dxs*sin(avetau))
 20      Continue
         scale=1.0-yis(i,j)
+        
         wtflw=-wtflw/scale
         test=abs(rhovel-wtflw/(yratio*yratio**fdim))
         If(inner<25) Goto 22
-        Write(7,600)
+        Write(6,600)
         Call exit
-22		If(test>error*rhovel) Goto 10
+22		write(*,*)"22"
+        If(test>error*rhovel) Goto 10
         vratio=vmax
         Do i=2,nsonic
           vratio=vratio-delv
           w(i)=omega(vratio,match)
           dw=w(i)-w(i-1)
+        !   write(*,*)"w(i)=",w(i)
+        !   write(*,*)"wj=",wj
+        !   write(*,*)"alpha=",alpha
+        !   write(*,*)"tau(1)=",tau(1)
+        !   write(*,*)"delw=",delw
+        !   write(*,*)"dw=",dw
           Call dzdxdy(w(i),wj,alpha,tau(1),delw,dw,0.0,dxs,dys)!ע��tau()����1����i
+
           xis(i,1)=xis(i-1,1)+dxs/scale
           yis(i,1)=yis(i-1,1)+dys/scale
-          ! write(*,*)"xis(i,1)",xis(i,1)
-          !   write(*,*)"yis(i,1)",yis(i,1)
+        !   write(*,*)"xis(i,1)=",xis(i,1)
+        !   write(*,*)"yis(i,1)=",yis(i,1)
         End Do
+
         Do i=1,nsonic
           Do j=2,nangle
 			dt=tau(j)-tau(j-1)
             If(i==1 .And. j==nangle) Goto 25
+        !     write(*,*)"w(i)=",w(i)
+        !     write(*,*)"wj=",wj
+        !     write(*,*)"alpha=",alpha
+        !     write(*,*)"tau(1)=",tau(1)
+        !     write(*,*)"delw=",delw
+        !     write(*,*)"dw=",dw
             Call dzdxdy(w(i),wj,alpha,tau(j),delw,0.0,dt,dxs,dys)
-25			xis(i,j)=xis(i,j-1)+dxs/scale
-            yis(i,j)=yis(i,j-1)+dys/scale
+25	write(*,*)"25"
+        xis(i,j)=xis(i,j-1)+dxs/scale
+           yis(i,j)=yis(i,j-1)+dys/scale
+        !    write(*,*)"scale",scale
+        !    write(*,*)"dxs(i,k)=",dxs
+        !   write(*,*)"dys(i,k)=",dys
             If(j==nangle) yis(i,j)=0.0
           End Do
         End Do
         isonic=1
         xsonic(isonic)=xprim
-		ysonic(isonic)=yprim
+	ysonic(isonic)=yprim
         psonic(isonic)=funp(gamp,amr)
         tsonic(isonic)=tau(isonic)
-        write(*,*)"end here"
         Return
 		
 600		Format ('1',//40x,'unable to obtain convergence in subroutine sonic',////)		

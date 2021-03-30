@@ -25,6 +25,7 @@ Common wtfl, hshp, tos, top, gams, gamp, fung, amr, angr, apref, assaps, xprim, 
 	  &yacros(100)
 	  Common /outpn/ipnch, iprnt, icomp
         ave(x1, x2) = (x1+x2)/2.0
+
         i = islp
         iter = 0
         alpha = 0.0

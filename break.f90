@@ -33,6 +33,8 @@
         kappa=1.000
         wtol=0.0005
         ptol=0.0005
+
+        write(*,*)"call break"
 10		i=islp-1
         dydx=tan(theta(i))
         dtdx=(theta(i)-theta(i-1))/(xslp(i)-xslp(i-1))
@@ -76,6 +78,7 @@
         php(islp)=recomp*pref
         amp(islp)=funm(gamp,php(islp))
         area(niter)=amin1(area(niter),asass(islp))
+        
         point=-1.0
         nhigh=0
         Do 14, i=1,niter
@@ -105,7 +108,8 @@
 17			islp=islp+1
         Call slip(j)
         Call slid(j)
-18		Return
+18   write(*,*)"call break"
+        Return
         
 
 600		Format('1'//35X,'wake impinges on shroud wall at xslp=',f9.6,'yslp =',F9.6,//)        
