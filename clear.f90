@@ -42,7 +42,7 @@
         kmax=100-kshift
         Do k=1, jref
           i=k+kshift
-          test=abs(x(2,i)-x(2,i-1))
+          test=abs(x(2,i)-x(2,i+1))
           If(x(2,i)==x(2,i+1)) Goto 16
           If(kshift>0 .And. test<=error) Goto 16
           j=1+j

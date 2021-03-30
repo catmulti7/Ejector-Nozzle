@@ -38,7 +38,9 @@
 			if(fdim==1.0) beta=1.25
 			if(wtfl>0.0 .And. islp==1) Goto 12
 			if(wtfl>0.0 .And. islp>1)	Goto 14
-			if(wtfl==0.0 .And. ams(i-1)>0.0) Goto 14
+			if(wtfl==0.0 ) then
+			if(ams(i-1)>0.0) Goto 14
+			end if
 			if(islp==1)	Goto 12
 10		xsum(i)=0.0
 			delshd(i)=0.0
