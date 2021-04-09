@@ -27,6 +27,7 @@
         funp(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-g/(g-1.0))
         funu(temp) = 2.27*32.17*temp**1.5/(198.6+temp)*1.E-8
 
+        write(*,*)"call cnlyr"
         If (reyprm==0.0) Goto 20
         s = 0.702
         i = icone
@@ -76,7 +77,8 @@
 18		icone=icone-1
         Call outlyr
         Call exit
-20		Return
+20		 write(*,*)"end cnlyr"
+        Return
 
       !      boundary layer along shroud wall
 

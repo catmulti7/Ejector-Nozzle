@@ -5,7 +5,8 @@
         Real mach				
         funa(g, am) = (2.0/(g+1.0)*(1.0+(g-1.0)/2.0*am*am))**((g+1.0)/(2.0*(g-1.0)))
         funb(g, am) = am*(2.0/(g+1.0)*(1.0+(g-1.0)/2.0*am*am))**((3.0-g)/(2.0*(g-1.0)))
-				
+        
+        write(*,*)"call astar"
         iter=0
         error=0.1
 10		iter=1+iter
@@ -16,6 +17,7 @@
         Call exit
         
 12		If(abs(f/dfdm/mach)>error) Goto 10
-14		Return				
+14	write(*,*)"end astar"	
+        Return				
 	End Subroutine astar
 	

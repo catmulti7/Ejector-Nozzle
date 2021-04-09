@@ -26,7 +26,7 @@
 			ave(x1,x2)=(x1+x2)/2.0
 			funp(g, am)=(1.0+(g-1.0)/2.0*am*am)**(-g/(g-1.0))
 			
-		!	write(*,*)"call coave"
+			!write(*,*)"call coave"
 			pmax=funp(gamp,1.0)
 			xave=ave(x(i1,j1),x(i2,j2))
 			yave=ave(y(i1,j1),y(i2,j2))
@@ -40,9 +40,9 @@
 			Call exit
 
 !10		write(*,*)"end coave"
-10 Return		
+	10	 Return		
 600		format('1',//33X,'conditions of sonic flow have been reached in subroutine coave',///)
-602		format(29X,'xave=',F9.5,4X,'yave=',F9.5,4X,'yave=',F8.5,4X,'pave=',F8.5,4X,'tave=',F9.5)
+602		format(29X,'xave=',F9.5,4X,'yave=',F9.5,4X,'pave=',F8.5,4X,'tave=',F8.5,4X)
 			
 	End subroutine coave
 	

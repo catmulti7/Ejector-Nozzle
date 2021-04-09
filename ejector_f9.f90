@@ -247,7 +247,6 @@ close(1)
 	  If (iplot>0) prt = -1.0
 		
 10	niter = 1 + niter
-WRITE(*,*)"niter=",niter
 	  islp = 1
 	  skip = 0.0
 	  typ = 1.0		!****type用typ代替
@@ -278,7 +277,9 @@ WRITE(*,*)"niter=",niter
 	!   write(*,*)"stag=",stag
 	  If (try==1.0) Call sonics
 	  vel = funq(gamp, amr)
+	  write(*,*)"x,y,p,t(1,j) init"
 		Do j = 1, 100
+			write(*,*)"j=",j
 			x(1, j) = xprim
 			y(1, j) = yprim
 			If (j==1) delv = 0.0
@@ -304,8 +305,8 @@ WRITE(*,*)"niter=",niter
 			t(2, 1) = tsonic(i)
 			If (try==1.0) Call sonpt(i)
 			Do j = 2, 100
-				write(*,*)"bp5"
-				write(*,*)"p(1,j)=",p(1,j)
+				! write(*,*)"bp5"
+				! write(*,*)"p(1,j)=",p(1,j)
 				If (p(1,j)==0.0) Goto 18
 				Call field(j)
 			End Do
@@ -313,9 +314,10 @@ WRITE(*,*)"niter=",niter
 			Call slip(j)
 			Call slid(j)
 			If (solve==2.0 .And. point==-1.0) Call break(j)
-			write(*,*)"stag=",stag
+			! write(*,*)"stag=",stag
 20		If (stag==2.0) Goto 34
 			area(niter) = amin1(area(niter), asass(islp))
+			write(*,*)"area(niter)",area(niter)
 			Call clear(0, j)
 			radius = sqrt((x(1,2)-x(1,1))**2+(y(1,2)-y(1,1))**2)
 			nsert = radius/k4
@@ -349,15 +351,15 @@ WRITE(*,*)"niter=",niter
 			If (point/=0.0) Goto 34
 		End Do
 
-34	 write(*,*)"bp6"
-		If (cas==1.0) Goto 38
+! 34	 write(*,*)"bp6"
+	34	If (cas==1.0) Goto 38
 		If (solve<=1.0) Call estmp
 		If (solve==2.0 .And. typ==0.0) choke = 0.0
 		If (solve==2.0 .And. typ==1.0) Call estmw
 36	If (icomp>0 .And. choke==0.0) Call comp(k4, skip)
 		
 		Call outslp
-		write(*,*)"bp7"
+		! write(*,*)"bp7"
 		If (iplot==1) Call plotl
 		If (iplot==1 .And. choke/=-1.0) Goto 40
 		If (prt==0.0 .And. choke/=-1.0) Goto 40

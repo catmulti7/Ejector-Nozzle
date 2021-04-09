@@ -27,7 +27,7 @@
 			ave(x1,x2)=(x1+x2)/2.0
       !     Subroutine buund
 
-         write(*,*)"call bound"
+        write(*,*)"call bound"
         iter=0
         error=0.0001
         x(2, j) = x(1, j)
@@ -67,8 +67,8 @@
         If (iplot == 1) Call plotl
         Call exit
 14		If (test > error*p(2, j)) Goto 10
-	!	write(*,*)"call bound"
-16 Return
+16	write(*,*)"call bound"
+        Return
 				
 600		format('1',//,'unable to obtain cunvergence in subroutine line',//)				
 602		format(8X,'ITER=',I3,4X,'X(2,j)=',F8.5,4X,'Y(2,j)=',F8.5,4X,'P(2,j)=',F8.5,4X,'T(2,j)=',F8.5,4X,'TEST=',1PE12.5)

@@ -108,7 +108,7 @@
 17			islp=islp+1
         Call slip(j)
         Call slid(j)
-18   write(*,*)"call break"
+18   write(*,*)"end break"
         Return
         
 

@@ -36,7 +36,7 @@
         wtflw=0.80
         nangle=ndata
         angle=conva*abs(angr)
-        error=3
+        error=1
         match=0.99-0.001*(angle-10.0)
         vmatch=funv(gamp,match)
         vamb=funq(gamp,pamb)

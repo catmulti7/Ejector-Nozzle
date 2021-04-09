@@ -26,6 +26,7 @@ Common wtfl, hshp, tos, top, gams, gamp, fung, amr, angr, apref, assaps, xprim, 
 	  Common /outpn/ipnch, iprnt, icomp
         ave(x1, x2) = (x1+x2)/2.0
 
+        write(*,*)"call ajax"
         i = islp
         iter = 0
         alpha = 0.0
@@ -34,7 +35,7 @@ Common wtfl, hshp, tos, top, gams, gamp, fung, amr, angr, apref, assaps, xprim, 
         dypdx = tan(theta(i))
         Call finde(xp, yp, a, 2.0)
         If (islp==1) pest = 0.0        
-10		iter = 1 + iter
+10  iter = 1 + iter
         xref = xp
         yref = yp
         b = -1.0/ave(a, dypdx)
@@ -46,16 +47,17 @@ Common wtfl, hshp, tos, top, gams, gamp, fung, amr, angr, apref, assaps, xprim, 
         Write (7, 602) xslp(islp), yslp(islp)
         pest = 1.0
         Goto 14        
-12		If (test>error*yp) Goto 10        
-14		Call shlyr(ddsdx)
+12  If (test>error*yp) Goto 10        
+14  Call shlyr(ddsdx)
         yp = yp - delshd(islp)
         a = a - ddsdx
         alpha = atan(ave(a,dypdx))
         asec = (yp*yp**fdim-yslp(i)*yslp(i)**fdim)/cos(alpha)
         dadx = (1.0+fdim)*(yp**fdim*a-yslp(i)**fdim*dypdx)/cos(alpha)
+        write(*,*)"end ajax"
         Return
 		
-600		Format ('1', //28X, 18A4, //)        
-602		Format (//25X, 'unable to obtain convergence in subroutine ajax,xslp=', F8.5,', yslp=',F8.5)
+600  Format ('1', //28X, 18A4, //)        
+602  Format (//25X, 'unable to obtain convergence in subroutine ajax,xslp=', F8.5,', yslp=',F8.5)
       end Subroutine 
 	
