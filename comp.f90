@@ -25,6 +25,7 @@
 
       !     Subroutine comp
 
+        write(*,*)"call comp"
         Do k = 1, 100
           x(2, k) = 0.0
           y(2, k) = 0.0
@@ -73,5 +74,6 @@
         pcone(icone) = pcone(icone-1) + dp/dx*(xcone(icone)-xcone(icone-1))
         tcone(icone) = atan(dybdx(nbdy))
         
-20		Return
+20	 write(*,*)"end comp"
+	Return
 	End Subroutine comp	

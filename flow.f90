@@ -27,7 +27,7 @@
         ave(x1, x2) = (x1+x2)/2.0
                         
         
-        !write(*,*)"call flow"
+        write(*,*)"call flow"
         i=islp
         iter=0
         atol=1.05
@@ -82,8 +82,8 @@
         If(islp>1 .Or. point==0.0) Goto 22
         asass(i)=0.50
         If(niter==50) Call exit
-       ! 22 write(*,*)"end flow"
-22   Return
+ 22 write(*,*)"end flow"
+         Return
 				
 600		Format('1',//40X,'unable to obtain convengence in subroutine flow',////)
 602		Format('j')

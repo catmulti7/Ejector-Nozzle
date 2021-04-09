@@ -22,7 +22,7 @@
   
 	      Common pts(25), area(25), wleak(25), title(18), niter, try
         
-        WRITE(*,*)"call estmp"
+        ! WRITE(*,*)"call estmp"
         ptoL=0.0001
         atoL=1.05
         deLp=1.02
@@ -82,8 +82,8 @@
 24		  hshp=pmin
           choke=1.0
           pts(niter+1)=hshp
-26   WRITE(*,*)"end estmp" 
- Return
+! 26   WRITE(*,*)"end estmp" 
+ 26 Return
 600		  Format('1')
 					
         End Subroutine estmp

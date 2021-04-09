@@ -34,6 +34,7 @@
     !
     !     subroutine datum
     !
+      write(*,*)"call datum"
       xp = 0.0
       div = ndata - 1
       isonic = ndata
@@ -117,6 +118,7 @@
       pcone(icone) = psonic(ndata)
       tcone(icone) = atan(dypdx)
       amr = funm(gamp, psonic(1))
+      write(*,*)"end datum"
       Return
 600		Format ('1', //28X, 12A6, ///)
     End Subroutine datum

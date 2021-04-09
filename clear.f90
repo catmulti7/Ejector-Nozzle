@@ -18,6 +18,7 @@
       Common /bnlyr/xsum(100), ysum(100), delshd(100), thetas(100), cfshd(100), xcne(100), ycne(100), delcne(100),&
       & thetac(100), cfcne(100), reyprm, pop, aop, vop, reysec, pos, aos, vos, pex, xscale
 
+      write(*,*)"call clear"
         error=0.0001
         xref=x(2,jref)
         If(islp>1) Goto 14
@@ -64,5 +65,6 @@
             t(i,k)=0.0
           End Do
         End Do
-26		Return
+26		write(*,*)"end clear"
+      Return
       End Subroutine clear

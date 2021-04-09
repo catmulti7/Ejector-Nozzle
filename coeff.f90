@@ -5,7 +5,8 @@
         Dimension cfs(16)
 
         funm(g, ph) = sqrt(2.0/(g-1.0)*(ph**(-(g-1.0)/g)-1.0))
-				
+        
+        !write(*,*)"call coeff"
         amp = funm(gam, pps)
         amup = asin(1.0/amp)
         angpu = angp + amup
@@ -26,5 +27,6 @@
         cfs(14) = cfs(13)
         cfs(15) = sin(angpu)
         cfs(16) = sin(angmu)
+        !write(*,*)"end coeff"
         Return
       End Subroutine coeff

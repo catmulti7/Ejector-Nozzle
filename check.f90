@@ -18,7 +18,8 @@
 	      Common pts(25), area(25), wleak(25), title(18), niter, try
 				
         ave(x1,x2)=(x1+x2)/2.0
-				
+                
+        write(*,*)"call check"
         shock=0.0
         Lref=j-1
         Do L=1, Lref			
@@ -50,6 +51,7 @@
 		End Do
 18		j=i-1
         shock=1.0
-20		Return
+20		write(*,*)"end check"
+        Return
 600		Format(//35X,'Coalesence has occurred at xp='F8.5,',yp=',f8.5)
       End Subroutine check
