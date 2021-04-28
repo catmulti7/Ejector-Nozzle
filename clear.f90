@@ -46,7 +46,7 @@
           test=abs(x(2,i)-x(2,i+1))
           If(x(2,i)==x(2,i+1)) Goto 16
           If(kshift>0 .And. test<=error) Goto 16
-          j=1+j
+          j=i+j
           x(1,j)=x(2,i)
           y(1,j)=y(2,i)
           p(1,j)=p(2,i)
