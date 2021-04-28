@@ -299,10 +299,10 @@ close(1)
 14	If (skip==1.0) Call outfld(1)
 
 		Do 22 i = 2, ndata
-			x(2, 1) = xsonic(i)
-			y(2, 1) = ysonic(i)
-			p(2, 1) = psonic(i)
-			t(2, 1) = tsonic(i)
+			x(2, i) = xsonic(i)
+			y(2, i) = ysonic(i)
+			p(2, i) = psonic(i)
+			t(2, i) = tsonic(i)
 			If (try==1.0) Call sonpt(i)
 			Do j = 2, 100
 				! write(*,*)"bp5"
