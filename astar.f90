@@ -8,7 +8,7 @@
         
         write(*,*)"call astar"
         iter=0
-        error=0.1
+        error=0.00001
 10		iter=1+iter
         f=mach-funa(gam,mach)/area
         dfdm=1.0-funb(gam,mach)/area

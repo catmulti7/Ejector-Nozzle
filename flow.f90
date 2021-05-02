@@ -30,8 +30,8 @@
         write(*,*)"call flow"
         i=islp
         iter=0
-        atol=1.05
-        error=0.00001
+        !atol=1.05
+        error=0.0001
         asass(i)=1.0
         If(islp==1) amin=10.0
         If(stag>=0.0) Goto 10
@@ -46,10 +46,11 @@
         Goto 20
 10		iter=1+iter
         asave=asass(i)
+        write(*,*)"amp(islp)=",amp(i)
         If(i==1) theta(i)=pmer(amr,angr,amp(i),gamp)
         If(change==1.0) Goto 12
         Call ajax(xp,yp,alpha,asec,dadx)
-        asass(i)=asec/aprim*apref/assaps
+        asass(i)=asec/aprim*apref/assaps !(36)
         If(i==1) Goto 14
         If(asass(i)>1.05 .And. asass(i-1)>1.07) Goto 14
         ams(i)=ams(i-1)

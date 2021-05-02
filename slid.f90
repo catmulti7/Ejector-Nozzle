@@ -20,11 +20,13 @@
 				
         funm(g, ph) = sqrt(2.0/(g-1.0)*(ph**(-(g-1.0)/g)-1.0))
         funp(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-g/(g-1.0))
+        fung_(gam) = sqrt(gam)*((gam+1)/2)**(-(gam+1)/2*(gam-1))
         ave(x1, x2) = (x1+x2)/2.0
 				
         iter=0
-        error=0.1
-        If(islp==2) npoint=0
+        error=0.001
+        npoint=1
+        If(islp<=2) npoint=0 ! islp==2
         If(solve==0.0 .Or. stag==-1.0) Goto 18
         If(charge==1.0 .Or. change==-1.0) Goto 18
         amsave=amp(islp)
@@ -44,7 +46,7 @@
         amp(islp)=funm(gamp,php(islp))
         Call wake(delw,dela)
         aspref=(asec-dela)/aprim*apref/asass(islp)
-        ws=1.0/fung*hshp*aspref
+        ws=1.0/(fung_(gamp)/fung_(gams))*hshp*aspref
         wsec=ws+delw
         wratio=ws/wtfl
         wmix=delw/wtfl

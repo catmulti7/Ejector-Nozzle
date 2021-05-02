@@ -30,7 +30,7 @@ Common wtfl, hshp, tos, top, gams, gamp, fung, amr, angr, apref, assaps, xprim, 
         i = islp
         iter = 0
         alpha = 0.0
-        error = 0.05
+        error = 0.0005
         xp = xslp(i)
         dypdx = tan(theta(i))
         Call finde(xp, yp, a, 2.0)

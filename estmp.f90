@@ -24,8 +24,8 @@
         
         ! WRITE(*,*)"call estmp"
         ptoL=0.0001
-        atoL=1.05
-        deLp=1.02
+        atol=1.05
+        delp=1.02
         aref=1.001
         hshp=pts(niter)
         area(niter)=asass(islp)

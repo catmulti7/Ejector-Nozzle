@@ -36,7 +36,7 @@
         wtflw=0.80
         nangle=ndata
         angle=conva*abs(angr)
-        error=1
+        error=3
         match=0.99-0.001*(angle-10.0)
         vmatch=funv(gamp,match)
         vamb=funq(gamp,pamb)
@@ -129,7 +129,7 @@ iter=1+iter
         !   write(*,*)"dw=",dw
           Call dzdxdy(w(i),wj,alpha,tau(1),delw,dw,0.0,dxs,dys)!ע��tau()����1����i
 
-          xis(i,1)=xis(i-1,1)+dxs/scale
+          xis(i, 1)=xis(i-1,1)+dxs/scale
           yis(i,1)=yis(i-1,1)+dys/scale
         !   write(*,*)"xis(i,1)=",xis(i,1)
         !   write(*,*)"yis(i,1)=",yis(i,1)

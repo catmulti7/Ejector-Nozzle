@@ -152,10 +152,11 @@
 	  funp(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-g/(g-1.0))
 	  funq(g, am) = sqrt((g-1.0)/2.0*am*am/(1.0+(g-1.0)/2.0*am*am))
 	  funw(g, vel) = sqrt(2.0/(g-1.0)*vel*vel/(1.0-vel*vel))
-!
+	  fung_(gam) = sqrt(gam)*((gam+1)/2)**(-(gam+1)/2*(gam-1))
+
 !   I/O
-CHARACTER(len=80):: paramfilename ='../../params.txt'
-CHARACTER(len=80):: resultfilename ='../../result.txt'
+CHARACTER(len=80):: paramfilename ='../params.txt'
+CHARACTER(len=80):: resultfilename ='../result.txt'
 open(unit=1, file=paramfilename)
 open(unit=7, file=resultfilename)
 
@@ -262,7 +263,7 @@ close(1)
 	  pts(niter) = hshp
 	  wleak(niter) = 0.0
 	  Call clear(0,1)
-	  assaps = fung*wtfl/hshp		!公式（65）
+	  assaps = fung_(gamp)/fung_(gams)*wtfl/hshp		!公式（65）
 	  xslp(islp) = xprim
 	  yslp(islp) = yprim
 	  ams(islp) = 0.200
