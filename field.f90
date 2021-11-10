@@ -26,7 +26,7 @@
         write(*,*)"call field"
         k=j-1
         iter=0
-        error=0.1
+        error=0.0001
         x(2,j)=ave(x(1,j),x(2,k))
         y(2,j)=ave(y(1,j),y(2,k))
         p(2,j)=ave(p(1,j),p(2,k))

@@ -30,7 +30,7 @@
         write(*,*)"call flow"
         i=islp
         iter=0
-        !atol=1.05
+        atol=1.05
         error=0.0001
         asass(i)=1.0
         If(islp==1) amin=10.0
@@ -44,7 +44,7 @@
         Call shlyr(ddsdx)
         If(i==1) theta(i)=pmer(amr,angr,amp(i),gamp) 
         Goto 20
-10		iter=1+iter
+10   iter=1+iter
         asave=asass(i)
         write(*,*)"amp(islp)=",amp(i)
         If(i==1) theta(i)=pmer(amr,angr,amp(i),gamp)
@@ -54,7 +54,8 @@
         If(i==1) Goto 14
         If(asass(i)>1.05 .And. asass(i-1)>1.07) Goto 14
         ams(i)=ams(i-1)
-12		change=1.0
+
+12   change=1.0 !change=1.0
         Call ajax(xp,yp,alpha,asec,dadx)
         asass(i)=ave(asass(i-1),funa(gams,ams(i)))
         asec=asass(i)*aprim/apref*assaps
@@ -66,7 +67,8 @@
         dydx=(y(2,j)-y(1,j-1))/(x(2,j)-x(1,j-1))
         theta(i)=atan(ave(dydx,dzdx))
         If(asass(i)>1.0) Goto 16
-14		If(asass(i)<1.0) Goto 20
+
+14   If(asass(i)<1.0) Goto 20
         Call astar(ams(i),asass(i),gams)
         phs(i)=funp(gams,ams(i))
         php(i)=phs(i)*hshp
@@ -77,14 +79,23 @@
         If(iter<25) Goto 18
         Write(7,600)
         Call exit
-18		If(test>error*asass(i)) Goto 10
-20		point=0.0
+18   If(test>error*asass(i)) Goto 10
+20   point=0.0
         If(asass(i)<1.0) point=-1.0
         If(islp>1 .Or. point==0.0) Goto 22
+        hshp=1.50*hshp/asass(i)
         asass(i)=0.50
         If(niter==50) Call exit
- 22 write(*,*)"end flow"
-         Return
+ 22  write(*,*)"xslp=",xslp(i)
+        write(*,*)"yslp=",yslp(i)
+        write(*,*)"amp=",amp(i)
+        write(*,*)"theta=",conva*theta(i)
+        write(*,*)"p/ptp=",php(i)
+        write(*,*)"ams=",ams(i)
+        write(*,*)"p/pts=",phs(i)
+        write(*,*)"as/as*=",asass(i)
+        write(*,*)"end flow"
+        Return
 				
 600		Format('1',//40X,'unable to obtain convengence in subroutine flow',////)
 602		Format('j')

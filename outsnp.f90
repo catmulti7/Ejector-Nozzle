@@ -23,6 +23,7 @@
 	  Real k1, k2	  
 	  ave(x1, x2) = (x1+x2)/2.0
 	  
+	  write(*,*)"call outsnp"
 	  pex = 7.0
 	  cfl = 0.0
 	  cvl = 0.0
@@ -48,7 +49,8 @@
 	  k2 = 4.0*0.370*pex/((1.0+pex)*(2.0+pex))
 	  cfl = (1.0-k1*reyprm**(-0.20))*cfl
 	  cvl = (1.0-k2*reyprm**(-0.20))*cvl
-12	  Return
+12	 write(*,*)"call outsnp"
+ Return
 	  
 600	  Format ('1', //33X, 18A4, //)	  
 604	  Format (35X, 'xsonic=',f9.5, 8X, 'ysonic=',f8.5, 8X, 'tsonic=',f10.5)

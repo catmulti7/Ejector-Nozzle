@@ -30,11 +30,11 @@ Common wtfl, hshp, tos, top, gams, gamp, fung, amr, angr, apref, assaps, xprim, 
         i = islp
         iter = 0
         alpha = 0.0
-        error = 0.0005
+        error = 0.0005 !error=0.0005
         xp = xslp(i)
         dypdx = tan(theta(i))
         Call finde(xp, yp, a, 2.0)
-        If (islp==1) pest = 0.0        
+        If (islp==1) pest = 0.0
 10  iter = 1 + iter
         xref = xp
         yref = yp
@@ -45,6 +45,7 @@ Common wtfl, hshp, tos, top, gams, gamp, fung, amr, angr, apref, assaps, xprim, 
         If (iter<100) Goto 12
         If (pest==0.0) Write (7, 600)(title(k), k=1, 18)
         Write (7, 602) xslp(islp), yslp(islp)
+        Write (*, 602) xslp(islp), yslp(islp)
         pest = 1.0
         Goto 14        
 12  If (test>error*yp) Goto 10        

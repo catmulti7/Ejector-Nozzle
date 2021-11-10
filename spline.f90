@@ -1,7 +1,6 @@
       Subroutine spline(x, y, n, slope, dummy)
       !    	Calculation of first and second derivatives
-	    !         һ�׺Ͷ��׵����ļ���
-	
+	    !         计算一二阶导数
         Dimension x(100), y(100), s(100), a(100), b(100), c(100), f(100), w(100), sb(100), g(100), em(100), slope(100)
         Do i = 2, n
           s(i) = x(i) - x(i-1)

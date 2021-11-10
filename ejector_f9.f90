@@ -121,17 +121,61 @@
 !	number of points specifing plug contour;				nbdy=0      指定引射塞式离散点数
 !	number of points specifing enterence conditions; ndata=21   指定入口离散点数
 
-	
+
+!	全局变量区
+	! x,y 坐标 p,t 对应坐标上的温度与压强
+	! 最终计算结果存放于此，是流场中离散点的坐标与该点的参数
+	! 两行用于进行迭代计算
 	  Common x(2, 100), y(2, 100), p(2, 100), t(2, 100) !两行100列矩阵
+
+
 	  Common xslp(100), yslp(100), amp(100), theta(100), php(100), ams(100), phs(100), asass(100), dasdx(100), islp
 	  Common xis(21, 26), yis(21, 26), w(21), tau(26), nsonic, nangle
   
 	  Common xsonic(26), ysonic(26), psonic(26), tsonic(26), isonic
+
+
 	  Common xcone(100), ycone(100), pcone(100), tcone(100), icone
-  
+		
+	! 外罩坐标与斜率，nshd=总的外罩轮廓点数目
 	  Common xshd(100), yshd(100), dysdx(100), nshd
+
+	
 	  Common xbdy(100), ybdy(100), dybdx(100), nbdy
-  
+	
+	! 命名规律：s=secondary 次流
+	! 命名规律：p=primary 主流
+	! 标？意为不确定
+	!     wtfl=ratio of secondary to primary corrected weight flow 二次流与主流换算质量流量比
+	!     hshp=ratio of secondary to primary total pressure 次主流总压比
+	!     tos=total temperature of secondary flow K(R°)二次流总温
+	!	  top=total temperature of primary flow 主流总温
+	!	  gams=ratio of cp/cv of secondary flow 次流比热比
+	!     gamp=ratio of cp/cv of primary flow 主流比热比
+	!     fung 公式（33）中参数
+	!     amr=initial primary mach number 主流流场计算的初始马赫数
+	!	  对于塞式喷管amr=1.003；对于其他喷管amr=1.001,format(6e12.0)
+	!     angr=angle of primary lip(degrees) 主喷管唇口角度
+			  !对于平面声速线angr=0；对于其他喷管angr<0
+	!	  ？ apref 主流参考面积
+	!	 assaps=as*/ap*(s=star,即为*)
+	!     xprim=primry flow station !主喷嘴出口相对于护罩轮廓点坐标系统的位置，厘米（英寸）
+	!     dprim=diamieter of primary nozzle exit 主喷管出口直径
+	!	  yprim和aprim的定义不清楚
+	!     dshd=diameter of shroud 外罩直径，将NSHD设置为1时，其值为DSHD直径值,厘米（英寸）的圆柱形导流罩喷射器的性能
+	!     dbdy=diameter of body at primary flow station 塞式喷管主喷嘴出口直径cm(in)
+	!     cona=cone centerbody angle (degrees)塞锥半角
+	!     end(edn)=eject length 喷管出口相对轴向位置
+	!     ？pamb 某压强
+	!     yratio=primary nozzle radius ratio 主喷管半径比
+	!	  conva, convr 角度转弧度和弧度转角度参数
+	!	slove 控制参数
+	  !     set solve=0.0 for non-mixing solution 对于非混合解设置，solve=0.0
+	  !     set solve=1.0 for mixing solution 对于计算混合解设置，solve=1.0 for 换算流量wtfl＞0.04
+	  !     set solve=2.0 for impingement solution 对于计算冲击碰撞解设置，solve=2.for 0≤换算流量wtfl<0.04
+	!	choke=-1/0/1 表示次流是否拥塞（详见estmp程序)
+	!	？change 子程序flow中使用，类似一个标志量
+	!	？charge 子程序slid中使用，类似一个标志量
 	  Common wtfl, hshp, tos, top, gams, gamp, fung, amr, angr, apref, assaps, xprim, yprim, aprim, dprim, cfl, cvl, cona, dbdy&
 	  &, dshd,edn, pamb, yratio, pi, conva, convr, fdim, ndata, nstop, solve, choke, change, charge, typ, point, stag
   
@@ -152,9 +196,8 @@
 	  funp(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-g/(g-1.0))
 	  funq(g, am) = sqrt((g-1.0)/2.0*am*am/(1.0+(g-1.0)/2.0*am*am))
 	  funw(g, vel) = sqrt(2.0/(g-1.0)*vel*vel/(1.0-vel*vel))
-	  fung_(gam) = sqrt(gam)*((gam+1)/2)**(-(gam+1)/2*(gam-1))
 
-!   I/O
+!   输入
 CHARACTER(len=80):: paramfilename ='../params.txt'
 CHARACTER(len=80):: resultfilename ='../result.txt'
 open(unit=1, file=paramfilename)
@@ -168,8 +211,10 @@ open(unit=7, file=resultfilename)
 608 Format(10XE12.0,/,10XE12.0)
 
 
+! 标题
 5 read (1,"(18A4)")(title(i), i=1, 18) !Card 1 Title Card 任何字母数字特征,暂注释掉 
 
+! 初始参数
 read(1,600)wtfl, hshp, tos, gams, top, gamp
 Write(*,*)"wtfl, hshp, tos, gams, top, gamp ="
 Write(*,*)wtfl, hshp, tos, gams, top, gamp
@@ -181,6 +226,8 @@ Write(*,*)amr, angr, yratio, xprim, dprim, dshd
 Read (1,602) dbdy, cona, edn, reyprm, delshd(1), fdim
 Write(*,*)"dbdy, cona, edn, reyprm, delshd(1), fdim="
 Write(*,*)dbdy, cona, edn, reyprm, delshd(1), fdim
+
+
 
 Read (1,600) k1, k2, k3, k4, solve, prt
 Write(*,*)"k1, k2, k3, k4, solve, prt="
@@ -197,10 +244,12 @@ If (niter>0)  write (*,*)(pts(i), area(i), wleak(i), i=1, niter)
 If (icomp==2) Read (1, 608) xprf(1), xprf(6)
 If (icomp==2) write (*,*) xprf(1), xprf(6)
 
+! 几何参数，外罩坐标
 If (nshd>1)  Read (1, 608)(xshd(i), yshd(i), i=1, nshd)	  !Card 8 Shoud Geometry (for NSHD>1)
 If (nshd>1)  write (*,*)"shoud contour points data"
 If (nshd>1)  write (*,*)(xshd(i), yshd(i), i=1, nshd)
 
+! 几何参数，中心锥体坐标
 If (nbdy>0)  Read (1, 608)(xbdy(i), ybdy(i), i=1, nbdy)
 If (nbdy>0)  write (*,*)"centerbody contour points data"
 If (nbdy>0)  write (*,*)(xbdy(i), ybdy(i), i=1, nbdy)
@@ -208,6 +257,7 @@ If (nbdy>0)  write (*,*)(xbdy(i), ybdy(i), i=1, nbdy)
 Write(*,*)"file read done"
 close(1)
 
+! 输入结束
 
 ! !     program eject
 ! 	  Write(*,*)"title"
@@ -263,12 +313,17 @@ close(1)
 	  pts(niter) = hshp
 	  wleak(niter) = 0.0
 	  Call clear(0,1)
-	  assaps = fung_(gamp)/fung_(gams)*wtfl/hshp		!公式（65）
+	  assaps = fung*wtfl/hshp		!公式（33）
 	  xslp(islp) = xprim
 	  yslp(islp) = yprim
 	  ams(islp) = 0.200
 	  amp(islp) = 1.500
 	  Call flow(islp)			!P53页flow()函数
+	!   php(1)=0.28564
+	!   phs(1)=0.97090
+	!   amp(1)=1.46709
+	!   ams(1)=0.20582
+	!   asass(1)=2.88378
 	  area(niter) = asass(islp)
 	  If (point==-1.0) Goto 10
 		

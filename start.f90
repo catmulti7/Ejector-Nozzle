@@ -2,8 +2,9 @@
 	Subroutine start
 !
 !     Calculation of pertinent ejector parameters
-!			�й������������ļ���
-	  Common x(2, 100), y(2, 100), p(2, 100), t(2, 100) !����100�о���
+!			计算相关的引射参数
+!     子程序中计算初始的几何参数
+	  Common x(2, 100), y(2, 100), p(2, 100), t(2, 100) 
 	  Common xslp(100), yslp(100), amp(100), theta(100), php(100), ams(100), phs(100), asass(100), dasdx(100), islp
 	  Common xis(21, 26), yis(21, 26), w(21), tau(26), nsonic, nangle
   
@@ -24,10 +25,9 @@
 	Real k1, k2
 	
 	funa(g,am)=((g+1.0)/2.0)**(-(g+1.0)/(2.0*(g-1.0)))*1.0/am*(1.0+(g-1.0)/2.0*am*am)**((g+1.0)/(2.0*(g-1.0)))
-	fgam(g)=sqrt(g)*(g+1.0/2.0)**(-(g+1.0)/(2.0*(g-1.0)))
+	fgam(g)=sqrt(g)*((g+1.0)/2.0)**(-(g+1.0)/(2.0*(g-1.0)))
 
-!
-!     Subroutine start
+!主程序
 !
   edn=edn-xprim
   If(angr>0.0) angr=0.0
@@ -54,8 +54,8 @@
 	Write(7,630) ndata
 	lchk=45
 	pi=3.1415927
-	convr=0.01745329
-	conva=1.0/convr
+	convr=0.01745329 !角度转弧度
+	conva=1.0/convr !弧度转角度
 	angr=convr*angr
 	dpref=dprim
 	yprim=1.0

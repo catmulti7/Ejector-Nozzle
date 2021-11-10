@@ -83,7 +83,8 @@
 	  !punch 502, dim, scale, amcne(1) theta1, h1, div
 	  !punch 504, istop, istop, iprof, icard, iplot
 	  !punch 506, (zcone(i),ycone(i),amcne(i),pcone(i),delcne(i),thetac(i),cfcne(i),i=1,istop)	  
-18	  Return	
+18	  write(*,*)"end outlyr"
+	Return	
 	  
 600	Format('1',//28X,18A4,//)	  
 602	Format(22X,'wtfl=',f9.6,5X,'pts/pts=',f9.6,5X,'reyprm=',E10.3,5X,'reysec=',E10.3)	  

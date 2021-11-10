@@ -1,6 +1,6 @@
       Subroutine sintp(x, y, n, x1, y1)
       !
-      !   Interpolation subroutine  ²åÖµ×Ó³ÌÐò
+      !   Interpolation subroutine  ï¿½ï¿½Öµï¿½Ó³ï¿½ï¿½ï¿½
       !
         Dimension x(100), y(100)
         error = 0.0001

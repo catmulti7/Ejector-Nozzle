@@ -18,53 +18,54 @@
 	      Common pts(25), area(25), wleak(25), title(18), niter, try
 				
         Real match, mamb, maprch
-
+        
         funm(g, v) = sqrt(2.0/(g+1.0)*v*v/(1.0-(g-1.0)/(g+1.0)*v*v))
         funp(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-g/(g-1.0))
-        funr(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-1.0/(g-1.0))
+        funr(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-1.0/(g-1.0)) !静密度/总密度
         funq(g,pa)=sqrt((g+1.0)/(g-1.0)*(1.0-pa**((g-1.0)/g)))
         funv(g, am) = sqrt((g+1.0)/2.0*am*am/(1.0+(g-1.0)/2.0*am*am))
-        omega(v, am) = alog(2.0*v*am/sqrt(1.0-am*am)/(1.0+sqrt(1.0+v*v*am*am/(1.0-am*am))))
+        omega(v, am) = alog(2.0*v*am/sqrt(1.0-am*am)/(1.0+sqrt(1.0+v*v*am*am/(1.0-am*am))))!(8)
         ave(x1,x2)=(x1+x2)/2.0
 
       !
       !     Subroutine sonics
-      !
+  
         nmax=26
         inner=0
         nsonic=21
-        wtflw=0.80
+        wtflw=0.8
         nangle=ndata
         angle=conva*abs(angr)
-        error=3
+        error=0.001
         match=0.99-0.001*(angle-10.0)
-        vmatch=funv(gamp,match)
-        vamb=funq(gamp,pamb)
-        mamb=funm(gamp,vamb)
+        vmatch=funv(gamp,match) !某速度系数
+        vamb=funq(gamp,pamb) !主流速度系数
+        mamb=funm(gamp,vamb) !主流马赫数
         vmax=vamb/vmatch
-10      write(*,*)"10"
-		inner=1+inner
+10      inner=1+inner
         iter=0
         velapr=0.20
         rhovel=wtflw/(yratio*yratio**fdim)
         ! write(*,*)"wtflw=",wtflw
         ! write(*,*)"yratio=",yratio
         ! write(*,*)"fdim=",fdim
-12	write(*,*)"12"	
-iter=1+iter
+12	 iter=1+iter
         vaprch=velapr
         velstr=vaprch*vmatch
+        write(*,*)"vaprch=",vaprch
+        write(*,*)"vmatch=",vmatch
+        write(*,*)"velstr=",velstr
         maprch=funm(gamp,velstr)
+        write(*,*)"maprch=",maprch
         velapr=rhovel*funr(gamp,match)/funr(gamp,maprch)
-        ! write(*,*)"rhovel changed=",rhovel
+        write(*,*)"velapr=",velapr
+        write(*,*)"funr(gamp,match)/funr(gamp,maprch)=",funr(gamp,match)/funr(gamp,maprch)
         test=abs(velapr-vaprch)
         If(iter<50) Goto 14
         Write(7,600)
         Call exit
-14      write(*,*)"14"
-! write(*,*)"error*velapr=",error*velapr
-!         write(*,*)"test=",test
-	If(test>error*velapr) Goto 12
+14   write(*,*)"test=",test
+	      If(test>error*velapr) Goto 12
         vmin=0.750
         If(nangle>nmax) nangle=nmax
         If(nangle<=nstop) nangle=1+nstop
@@ -82,7 +83,7 @@ iter=1+iter
         tau(1)=angr
         alpha=abs(angr)
         dt=alpha/xnoa
-		!vratio=vmax
+		    !vratio=vmax
         Do i=2,nsonic
           vratio=vratio-delv  !vratio�����״γ���,ǰ��δ������
           If(vratio<1.0) vratio=1.0
@@ -92,9 +93,8 @@ iter=1+iter
           xis(i,1)=xis(i-1,1)+dxs
           yis(i,1)=yis(i-1,1)+dys
           If(vratio==1.0) Goto 18
-		End Do
-18		write(*,*)"18"
-        wtflw=0.0
+		    End Do
+18	 wtflw=0.0
         nchnge=nangle-nstop
         Do 20, j=2,nangle
           If(j<=nchnge) dt=dt
@@ -102,20 +102,27 @@ iter=1+iter
           If(j==nangle) dt=-tau(j-1)
           tau(j)=tau(j-1)+dt
           avetau=ave(tau(j),tau(j-1))
+          write(*,*)"w(i)=",w(i)
+          write(*,*)"wj=",wj
+          write(*,*)"alpha=",alpha
+          write(*,*)"tau(1)=",tau(j)
+          write(*,*)"delw=",delw
+          write(*,*)"dxs=",dxs
+          write(*,*)"dys=",dys
           Call dzdxdy(w(i),wj,alpha,tau(j),delw,0.0,dt,dxs,dys)
           xis(i,j)=xis(i,j-1)+dxs
           yis(i,j)=yis(i,j-1)+dys
           wtflw=wtflw+(dys*cos(avetau)-dxs*sin(avetau))
+          write(*,*)"wtflw=",wtflw
 20      Continue
         scale=1.0-yis(i,j)
-        
         wtflw=-wtflw/scale
         test=abs(rhovel-wtflw/(yratio*yratio**fdim))
+        write(*,*)"scale=",scale
         If(inner<25) Goto 22
         Write(6,600)
         Call exit
-22		write(*,*)"22"
-        If(test>error*rhovel) Goto 10
+22	 If(test>error*rhovel) Goto 10
         vratio=vmax
         Do i=2,nsonic
           vratio=vratio-delv
@@ -137,8 +144,8 @@ iter=1+iter
 
         Do i=1,nsonic
           Do j=2,nangle
-			dt=tau(j)-tau(j-1)
-            If(i==1 .And. j==nangle) Goto 25
+			      dt=tau(j)-tau(j-1)
+            If(i==1 .and. j==nangle) Goto 25
         !     write(*,*)"w(i)=",w(i)
         !     write(*,*)"wj=",wj
         !     write(*,*)"alpha=",alpha
@@ -146,10 +153,8 @@ iter=1+iter
         !     write(*,*)"delw=",delw
         !     write(*,*)"dw=",dw
             Call dzdxdy(w(i),wj,alpha,tau(j),delw,0.0,dt,dxs,dys)
-25	write(*,*)"25"
-        xis(i,j)=xis(i,j-1)+dxs/scale
-           yis(i,j)=yis(i,j-1)+dys/scale
-        !    write(*,*)"scale",scale
+25       xis(i,j)=xis(i,j-1)+dxs/scale
+            yis(i,j)=yis(i,j-1)+dys/scale
         !    write(*,*)"dxs(i,k)=",dxs
         !   write(*,*)"dys(i,k)=",dys
             If(j==nangle) yis(i,j)=0.0
@@ -157,7 +162,7 @@ iter=1+iter
         End Do
         isonic=1
         xsonic(isonic)=xprim
-	ysonic(isonic)=yprim
+        ysonic(isonic)=yprim
         psonic(isonic)=funp(gamp,amr)
         tsonic(isonic)=tau(isonic)
         Return
