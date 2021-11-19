@@ -43,7 +43,7 @@
         kmax=100-kshift
         Do k=1, jref
           i=k+kshift
-          test=abs(x(2,i)-x(2,i+1))
+          test=abs(x(2,i)-x(2,i-1))
           If(x(2,i)==x(2,i+1)) Goto 16
           If(kshift>0 .And. test<=error) Goto 16
           j=i+j ! i+j or 1+j????
@@ -51,7 +51,7 @@
           y(1,j)=y(2,i)
           p(1,j)=p(2,i)
           t(1,j)=t(2,i)
-16		  x(2,i)=0.0
+16		 x(2,i)=0.0
           y(2,i)=0.0
           p(2,i)=0.0
           t(2,i)=0.0

@@ -42,7 +42,7 @@
         x(1, j) = xslp(islp-1) + delx
         y(1, j) = yslp(islp-1) + dy/dx*delx
         p(1, j) = php(islp-1) + dp/dx*delx
-        t(1, j) = theta(islp-1) + dt/dx*dx*delx        
+        t(1, j) = theta(islp-1) + dt/dx*delx        
 10		xcomp = xslp(islp)
 		
         If (nbdy>0) xcomp = xbdy(nbdy)

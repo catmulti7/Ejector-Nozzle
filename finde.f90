@@ -1,7 +1,7 @@
       Subroutine finde(xp, yp, dypdx, surf)
 		!
 		!     Location of shroud contour point
-		!        ����������λ��
+		!      外罩坐标点位置
 		Common x(2, 100), y(2, 100), p(2, 100), t(2, 100) !����100�о���
 		Common xslp(100), yslp(100), amp(100), theta(100), php(100), ams(100), phs(100), asass(100), dasdx(100), islp
 		Common xis(21, 26), yis(21, 26), w(21), tau(26), nsonic, nangle

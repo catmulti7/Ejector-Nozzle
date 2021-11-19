@@ -19,11 +19,11 @@
 				
         Real match, mamb, maprch
         
-        funm(g, v) = sqrt(2.0/(g+1.0)*v*v/(1.0-(g-1.0)/(g+1.0)*v*v))
-        funp(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-g/(g-1.0))
-        funr(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-1.0/(g-1.0)) !静密度/总密度
+        funm(g, v) = sqrt(2.0/(g+1.0)*v*v/(1.0-(g-1.0)/(g+1.0)*v*v)) !速度系数转马赫数
+        funp(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-g/(g-1.0)) !由静总压比求速度系数
+        funr(g, am) = (1.0+(g-1.0)/2.0*am*am)**(-1.0/(g-1.0)) !马赫数求静密度/总密度
         funq(g,pa)=sqrt((g+1.0)/(g-1.0)*(1.0-pa**((g-1.0)/g)))
-        funv(g, am) = sqrt((g+1.0)/2.0*am*am/(1.0+(g-1.0)/2.0*am*am))
+        funv(g, am) = sqrt((g+1.0)/2.0*am*am/(1.0+(g-1.0)/2.0*am*am)) !马赫数转速度系数
         omega(v, am) = alog(2.0*v*am/sqrt(1.0-am*am)/(1.0+sqrt(1.0+v*v*am*am/(1.0-am*am))))!(8)
         ave(x1,x2)=(x1+x2)/2.0
 

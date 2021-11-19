@@ -3,8 +3,8 @@
 
 
       !      Calculation of flow conditions along the slipline
-
-	      Common x(2, 100), y(2, 100), p(2, 100), t(2, 100) !����100�о���
+      !       计算射流边界流动参数
+	      Common x(2, 100), y(2, 100), p(2, 100), t(2, 100) 
 	      Common xslp(100), yslp(100), amp(100), theta(100), php(100), ams(100), phs(100), asass(100), dasdx(100), islp
 	      Common xis(21, 26), yis(21, 26), w(21), tau(26), nsonic, nangle
   
@@ -35,22 +35,22 @@
         asass(i)=1.0
         If(islp==1) amin=10.0
         If(stag>=0.0) Goto 10
-        p(2,j)=hshp
+        p(2,j)=hshp !hshp 次主流总压比，假设次流静止，则主流压强=次流总压，hshp=主流静总压比
         php(i)=hshp
-        amp(i)=funm(gamp,php(i))
-        ams(i)=0.0
+        amp(i)=funm(gamp,php(i)) !主流马赫数
+        ams(i)=0.0 !次流马赫数
         phs(i)=1.0
-        asass(i)=500.0
+        asass(i)=500.0 !某面积比
         Call shlyr(ddsdx)
         If(i==1) theta(i)=pmer(amr,angr,amp(i),gamp) 
         Goto 20
 10   iter=1+iter
         asave=asass(i)
         write(*,*)"amp(islp)=",amp(i)
-        If(i==1) theta(i)=pmer(amr,angr,amp(i),gamp)
+        If(i==1) theta(i)=pmer(amr,angr,amp(i),gamp) !普朗特-迈耶函数计算流动角度 amr：膨胀波前马赫数 amr：膨胀波后马赫数
         If(change==1.0) Goto 12
         Call ajax(xp,yp,alpha,asec,dadx)
-        asass(i)=asec/aprim*apref/assaps !(36)
+        asass(i)=asec/aprim*apref/assaps !论文公式(36)
         If(i==1) Goto 14
         If(asass(i)>1.05 .And. asass(i-1)>1.07) Goto 14
         ams(i)=ams(i-1)

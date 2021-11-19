@@ -69,8 +69,8 @@
           dmin=amin*(1.0+amin/2.0)
           dmax=amax*(1.0+amax/2.0)
           alpha=(pmin*dmax-pmax*dmin)/(dmax-dmin)
-          gamma=(pmax-pmin)/(dmax-kmin)
-          hshp=alpha+gamma*aref*(1.0+aref*2.0)
+          gamma=(pmax-pmin)/(dmax-dmin)
+          hshp=alpha+gamma*aref*(1.0+aref/2.0)
           hlow=(1.0+ptol)*plow
           hmin=(1.0-ptol)*pmin
           If(hshp <= hlow .Or. hshp>=hmin) hshp=pmin-(pmin-plow)/4.0

@@ -167,7 +167,7 @@
 	!     cona=cone centerbody angle (degrees)塞锥半角
 	!     end(edn)=eject length 喷管出口相对轴向位置
 	!     ？pamb 某压强
-	!     yratio=primary nozzle radius ratio 主喷管半径比
+	!     yratio=primary nozzle radius ratio 主喷管半径比（主流喷管最大截面与出口面积比）
 	!	  conva, convr 角度转弧度和弧度转角度参数
 	!	slove 控制参数
 	  !     set solve=0.0 for non-mixing solution 对于非混合解设置，solve=0.0
@@ -314,10 +314,13 @@ close(1)
 	  wleak(niter) = 0.0
 	  Call clear(0,1)
 	  assaps = fung*wtfl/hshp		!公式（33）
+
+	  !射流边界初始参数
 	  xslp(islp) = xprim
 	  yslp(islp) = yprim
 	  ams(islp) = 0.200
 	  amp(islp) = 1.500
+	 ! 计算射流边界流动参数
 	  Call flow(islp)			!P53页flow()函数
 	!   php(1)=0.28564
 	!   phs(1)=0.97090
@@ -387,7 +390,7 @@ close(1)
 		Do jslp = lslp, 100		!注意此处jslp可能有错
 			Call bound(2)
 			Do j = 3, 100
-				If (p(i,j)==0.0) Goto 28
+				If (p(1,j)==0.0) Goto 28
 				Call field(j)
 				Call check(j, shock)
 				If (shock==1.0) Goto 30

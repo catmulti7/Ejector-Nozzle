@@ -23,11 +23,11 @@
         ave(x1, x2) = (x1+x2)/2.0
 				
         iter=0
-        error=0.001
-        npoint=1
+        error=0.0001
+        !npoint=1
         If(islp<=2) npoint=0 ! islp==2
         If(solve==0.0 .Or. stag==-1.0) Goto 18
-        If(charge==1.0 .Or. change==-1.0) Goto 18
+        If(charge==1.0 .Or. change==1.0) Goto 18
         amsave=amp(islp)
         psave=php(islp)
         tsave=theta(islp)

@@ -28,10 +28,10 @@
 	fgam(g)=sqrt(g)*((g+1.0)/2.0)**(-(g+1.0)/(2.0*(g-1.0)))
 
 !主程序
-!
   edn=edn-xprim
   If(angr>0.0) angr=0.0
   
+!输出第一页
   Write(7,600)(title(i),i=1,18)
   Write(7,607) dprim
   Write(7,602) amr
@@ -65,7 +65,9 @@
     xshd(i)=2.0*(xshd(i)-xprim)/dpref
     yshd(i)=2.0*yshd(i)/dpref
 10 continue
-	If(nshd<=1) Goto 14
+  If(nshd<=1) Goto 14
+  
+  !计算外罩坐标（验证无误）
 	Call spline(xshd,yshd,nshd,dysdx,d2fdx2) 
 	line=0
 	Write(7,632)
